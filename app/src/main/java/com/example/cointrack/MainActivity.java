@@ -63,12 +63,12 @@ public class MainActivity extends AppCompatActivity {
 
                 BackgroundHelpers.addPrimaryTag(MainActivity.this, coinDB, t1);
 
-//                String regex = "Rs.(?<amt>\\d+\\.\\d+) .*";
-//                String name = "Indian Overseas Bank";
-//                String msgSender = ".{3}IOBCHN";
-//
+//                String regex = ".*by (?<amt>\\d+\\.\\d+) .*";
+//                String name = "State Bank of India";
+//                String msgSender = ".{3}SBIUPI";
+
 //                Bank b1 = new Bank(name, msgSender, regex);
-//
+
 //                BackgroundHelpers.addBank(MainActivity.this, coinDB, b1);
             }
         });
