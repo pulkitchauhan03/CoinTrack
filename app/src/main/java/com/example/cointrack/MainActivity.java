@@ -1,13 +1,11 @@
 package com.example.cointrack;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.view.Menu;
-import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
+import com.example.cointrack.models.Bank;
+import com.example.cointrack.models.PrimaryTag;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -22,9 +20,6 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.cointrack.databinding.ActivityMainBinding;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -67,6 +62,14 @@ public class MainActivity extends AppCompatActivity {
                 PrimaryTag t1 = new PrimaryTag(name);
 
                 BackgroundHelpers.addPrimaryTag(MainActivity.this, coinDB, t1);
+
+//                String regex = "Rs.(?<amt>\\d+\\.\\d+) .*";
+//                String name = "Indian Overseas Bank";
+//                String msgSender = ".{3}IOBCHN";
+//
+//                Bank b1 = new Bank(name, msgSender, regex);
+//
+//                BackgroundHelpers.addBank(MainActivity.this, coinDB, b1);
             }
         });
         DrawerLayout drawer = binding.drawerLayout;

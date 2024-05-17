@@ -1,4 +1,4 @@
-package com.example.cointrack;
+package com.example.cointrack.models;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -16,8 +16,8 @@ public class Transaction {
     private String sender;
     @ColumnInfo(name = "timestamp")
     private String timestamp;
-    @ColumnInfo(name = "bank")
-    private String bank;
+    @ColumnInfo(name = "trBankId")
+    private long trBankId;
     @ColumnInfo(name = "amount")
     private double amount;
     @ColumnInfo(name = "type")
@@ -28,11 +28,11 @@ public class Transaction {
     @Ignore
     public Transaction() { }
 
-    public Transaction(String message, String sender, String timestamp, String bank, double amount, String type, long trPrimaryTagId) {
+    public Transaction(String message, String sender, String timestamp, long trBankId, double amount, String type, long trPrimaryTagId) {
         this.message = message;
         this.sender = sender;
         this.timestamp = timestamp;
-        this.bank = bank;
+        this.trBankId = trBankId;
         this.amount = amount;
         this.type = type;
         this.trPrimaryTagId = trPrimaryTagId;
@@ -71,12 +71,12 @@ public class Transaction {
         this.timestamp = timestamp;
     }
 
-    public String getBank() {
-        return bank;
+    public long getTrBankId() {
+        return trBankId;
     }
 
-    public void setBank(String bank) {
-        this.bank = bank;
+    public void setTrBankId(long trBankId) {
+        this.trBankId = trBankId;
     }
 
     public double getAmount() {

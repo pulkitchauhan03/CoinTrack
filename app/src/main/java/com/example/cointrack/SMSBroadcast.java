@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
@@ -13,7 +15,16 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.cointrack.models.Bank;
+import com.example.cointrack.models.Transaction;
+
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SMSBroadcast extends BroadcastReceiver {
     private static String SMS = "android.provider.Telephony.SMS_RECEIVED";
@@ -60,15 +71,53 @@ public class SMSBroadcast extends BroadcastReceiver {
                     Toast toast = Toast.makeText(context, "senderNum: "+ senderNum + ", message: " + message, duration);
                     toast.show();
 
-                    String timestamp = "DD-MM-YYYY HH:mm:ss";
-                    String bank = "IOB";
-                    double amount = 200.0;
-                    String type = "Debit";
-                    long trPrimaryTagId = 1;
+                    ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-                    Transaction t1 = new Transaction(message, senderNum, timestamp, bank, amount, type, trPrimaryTagId);
+                    Handler handler = new Handler(Looper.getMainLooper());
 
-                    BackgroundHelpers.addTransaction(context, coinDB, t1);
+//                    String timestamp = java.time.LocalDateTime.now().toString();
+//                    long trBankId = 1;
+//                    double amount = 200.0;
+//                    String type = "Debit";
+//                    long trPrimaryTagId = 1;
+
+                    String finalSenderNum = senderNum;
+                    String finalMessage = message;
+                    executorService.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            List<Bank> bankList = coinDB.getBankDAO().getAllBank();
+                            Bank targetBank = null;
+                            for(Bank bank : bankList) {
+                                if(Pattern.matches(bank.getMsgSender(), finalSenderNum)) {
+                                    targetBank = bank;
+                                }
+                            }
+
+                            if(targetBank == null) return;
+                            double amount = 0.0;
+
+                            Pattern regex = Pattern.compile(targetBank.getRegex());
+                            Matcher messageMatcher = regex.matcher(finalMessage);
+                            while(messageMatcher.find()) {
+                                amount = Double.parseDouble(messageMatcher.group("amt"));
+                            }
+
+                            String timestamp = java.time.LocalDateTime.now().toString();
+                            long trBankId = targetBank.getBankId();
+                            String type = "Debit";
+                            long trPrimaryTagId = 1;
+
+                            coinDB.getTransactionDAO().addTransaction(new Transaction(finalMessage, finalSenderNum, timestamp, trBankId, amount, type, trPrimaryTagId));
+
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(context, "Added Bank to Database", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    });
                 }
             } catch (Exception e) {
                 Log.e("SmsReceiver", "Exception smsReceiver" +e);

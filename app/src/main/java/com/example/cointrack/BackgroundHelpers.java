@@ -5,6 +5,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
+import com.example.cointrack.models.Bank;
+import com.example.cointrack.models.PrimaryTag;
+import com.example.cointrack.models.Transaction;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -49,4 +53,23 @@ public class BackgroundHelpers {
         });
     }
 
+    public static void addBank(Context context, CoinTrackDatabase coinDB, Bank bank) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                coinDB.getBankDAO().addBank(bank);
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, "Added Bank to Database", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+    }
 }

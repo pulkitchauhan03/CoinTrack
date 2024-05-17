@@ -1,4 +1,4 @@
-package com.example.cointrack;
+package com.example.cointrack.models;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
