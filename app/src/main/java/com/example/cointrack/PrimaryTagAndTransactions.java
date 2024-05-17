@@ -9,7 +9,7 @@ public class PrimaryTagAndTransactions {
     @Embedded public PrimaryTag primaryTag;
     @Relation(
             parentColumn = "primaryTagId",
-            entityColumn = "userPrimaryTagId"
+            entityColumn = "trPrimaryTagId"
     )
     public List<Transaction> transactionList;
 }

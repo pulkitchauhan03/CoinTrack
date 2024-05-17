@@ -5,8 +5,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import java.util.Date;
-
 @Entity(tableName = "Transaction")
 public class Transaction {
     @ColumnInfo(name = "transactionId")
@@ -17,27 +15,27 @@ public class Transaction {
     @ColumnInfo(name = "sender")
     private String sender;
     @ColumnInfo(name = "timestamp")
-    private Date timestamp;
+    private String timestamp;
     @ColumnInfo(name = "bank")
     private String bank;
     @ColumnInfo(name = "amount")
     private double amount;
     @ColumnInfo(name = "type")
     private String type;
-    @ColumnInfo(name = "userPrimaryTagId")
-    private long userPrimaryTagId;
+    @ColumnInfo(name = "trPrimaryTagId")
+    private long trPrimaryTagId;
 
     @Ignore
     public Transaction() { }
 
-    public Transaction(String message, String sender, Date timestamp, String bank, double amount, String type, long userPrimaryTagId) {
+    public Transaction(String message, String sender, String timestamp, String bank, double amount, String type, long trPrimaryTagId) {
         this.message = message;
         this.sender = sender;
         this.timestamp = timestamp;
         this.bank = bank;
         this.amount = amount;
         this.type = type;
-        this.userPrimaryTagId = userPrimaryTagId;
+        this.trPrimaryTagId = trPrimaryTagId;
         this.transactionId = 0;
     }
 
@@ -65,11 +63,11 @@ public class Transaction {
         this.sender = sender;
     }
 
-    public Date getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -97,11 +95,11 @@ public class Transaction {
         this.type = type;
     }
 
-    public long getUserPrimaryTagId() {
-        return userPrimaryTagId;
+    public long getTrPrimaryTagId() {
+        return trPrimaryTagId;
     }
 
-    public void setUserPrimaryTagId(long userPrimaryTagId) {
-        this.userPrimaryTagId = userPrimaryTagId;
+    public void setTrPrimaryTagId(long trPrimaryTagId) {
+        this.trPrimaryTagId = trPrimaryTagId;
     }
 }
